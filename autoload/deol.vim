@@ -406,8 +406,8 @@ function! s:deol.init_edit_buffer() abort
         \ :<C-u>call deol#quit()<CR>
   inoremap <buffer><silent> <Plug>(deol_quit)
         \ <ESC>:call deol#quit()<CR>
-  inoremap <buffer><silent> <Plug>(deol_backspace)
-        \ <C-o>:call <SID>deol_backspace()<CR>
+  inoremap <buffer><expr><silent> <Plug>(deol_backspace)
+        \ <SID>deol_backspace()
   nnoremap <buffer><expr><silent> <Plug>(deol_ctrl_c)
         \ deol#send("\<C-c>")
   inoremap <buffer><expr><silent> <Plug>(deol_ctrl_c)
@@ -528,9 +528,9 @@ function! s:deol_backspace() abort
   if getline('.') ==# '' && t:deol.options.toggle
     stopinsert
     call deol#quit()
-  elseif s:get_input() ==# ''
+    return ''
   else
-    normal! x
+    return "\<BS>"
   endif
 endfunction
 
